@@ -23,6 +23,8 @@
 - **Automated scanning:** CI runs a .NET vulnerability audit on every build, CodeQL static analysis for C#,
   and a Microsoft Defender on-demand scan over all files in the release output before artifacts are
   published. If the Windows runner has no Defender CLI, the scan is skipped with a visible warning.
+  CodeQL currently publishes its SARIF findings as a build artifact instead of the Code Scanning dashboard,
+  because code scanning is not enabled in this repository's settings.
 
 ## Known limitations
 
