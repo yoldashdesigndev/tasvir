@@ -23,8 +23,9 @@
 - **Automated scanning:** CI runs a .NET vulnerability audit on every build, CodeQL static analysis for C#,
   and a Microsoft Defender on-demand scan over all files in the release output before artifacts are
   published. If the Windows runner has no Defender CLI, the scan is skipped with a visible warning.
-  CodeQL currently publishes its SARIF findings as a build artifact instead of the Code Scanning dashboard,
-  because code scanning is not enabled in this repository's settings. On GitHub-hosted Windows runners,
+  CodeQL uploads its SARIF findings to the Code Scanning dashboard for pushes and same-repository pull
+  requests. Fork pull requests receive a read-only token, so their results are published only as a build
+  artifact. On GitHub-hosted Windows runners,
   Microsoft Defender may report every file as "skipped"; the workflow detects this and emits a visible
   warning instead of claiming a successful antivirus scan. An effective antivirus scan must then be run on
   the downloaded release artifact on a machine with an active scanner.
