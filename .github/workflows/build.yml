@@ -94,12 +94,18 @@ jobs:
             exit 0
           }
           $files = Get-ChildItem -Path 'artifacts/publish' -Recurse -File
+          $scanned = 0
+          $skipped = 0
           foreach ($file in $files) {
-            & $mp -Scan -ScanType 3 -File $file.FullName
+            $output = & $mp -Scan -ScanType 3 -File $file.FullName 2>&1 | Out-String
             if ($LASTEXITCODE -eq 2) { throw "Threat detected in $($file.FullName)" }
             if ($LASTEXITCODE -ne 0) { throw "Antivirus scan error ($LASTEXITCODE) for $($file.FullName)" }
+            if ($output -match 'was skipped') { $skipped++ } else { $scanned++ }
           }
-          Write-Output "Defender scanned $($files.Count) release files."
+          Write-Output "Defender: $scanned files scanned, $skipped files skipped."
+          if ($scanned -eq 0 -and $files.Count -gt 0) {
+            Write-Warning 'Defender skipped every file on this runner; no effective antivirus scan was performed. Run an antivirus scan on the release artifact locally.'
+          }
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
