@@ -1,0 +1,145 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-windows:
+    name: Windows x64 build and tests
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Restore
+        run: dotnet restore Tasvir.sln
+
+      - name: Dependency vulnerability audit
+        shell: pwsh
+        run: |
+          $report = dotnet list Tasvir.sln package --vulnerable --include-transitive 2>&1 | Out-String
+          Write-Output $report
+          if ($report -match 'has the following vulnerable packages') { throw 'Vulnerable NuGet packages detected' }
+
+      - name: Build
+        run: dotnet build Tasvir.sln --no-restore -c Release
+
+      - name: Test
+        run: dotnet test src/Tasvir.Tests/Tasvir.Tests.csproj --no-build -c Release
+
+      - name: Publish
+        run: dotnet publish src/Tasvir.App/Tasvir.App.csproj -c Release -r win-x64 --self-contained false -o artifacts/publish
+
+      - name: Bundle verified ADB
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $expected = '45f4d63113e895ebde0c90f194099a4676b6ac653bd28d54314a9e022bbc1a99'
+          Invoke-WebRequest -Uri 'https://dl.google.com/android/repository/platform-tools-latest-windows.zip' -OutFile 'platform-tools.zip'
+          $actual = (Get-FileHash -Algorithm SHA256 'platform-tools.zip').Hash.ToLowerInvariant()
+          if ($actual -ne $expected) { throw "ADB integrity check failed: $actual" }
+          Expand-Archive -Path 'platform-tools.zip' -DestinationPath 'artifacts/adb' -Force
+          New-Item -ItemType Directory -Force -Path 'artifacts/publish/tools' | Out-Null
+          Copy-Item 'artifacts/adb/platform-tools/adb.exe', 'artifacts/adb/platform-tools/AdbWinApi.dll', 'artifacts/adb/platform-tools/AdbWinUsbApi.dll' -Destination 'artifacts/publish/tools'
+
+      - name: Bundle verified Scrcpy engine
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $expected = 'b12a2c4ee8be317422451fc7dcf8ee20a71b5ea7ef9ad73ddd825a25316227a5'
+          Invoke-WebRequest -Uri 'https://github.com/Genymobile/scrcpy/releases/download/v5.0.1/scrcpy-win64-v5.0.1.zip' -OutFile 'scrcpy.zip'
+          $actual = (Get-FileHash -Algorithm SHA256 'scrcpy.zip').Hash.ToLowerInvariant()
+          if ($actual -ne $expected) { throw "Scrcpy integrity check failed: $actual" }
+          Expand-Archive -Path 'scrcpy.zip' -DestinationPath 'artifacts/scrcpy' -Force
+          New-Item -ItemType Directory -Force -Path 'artifacts/publish/licenses' | Out-Null
+          $source = 'artifacts/scrcpy/scrcpy-win64-v5.0.1'
+          Copy-Item "$source/scrcpy.exe", "$source/scrcpy-server", "$source/SDL3.dll", "$source/avcodec-63.dll", "$source/avformat-63.dll", "$source/avutil-61.dll", "$source/swresample-7.dll", "$source/libusb-1.0.dll" -Destination 'artifacts/publish/tools'
+          Copy-Item "$source/LICENSE.txt" -Destination 'artifacts/publish/licenses/scrcpy-LICENSE.txt'
+
+      - name: Include documentation and notices
+        shell: pwsh
+        run: |
+          Copy-Item 'README.md' -Destination 'artifacts/publish/README.md'
+          Copy-Item 'LICENSES/README.md' -Destination 'artifacts/publish/licenses/THIRD_PARTY_NOTICES.md'
+          Copy-Item 'SECURITY.md' -Destination 'artifacts/publish/licenses/SECURITY.md'
+
+      - name: Install SBOM tool
+        run: dotnet tool install --global Microsoft.Sbom.DotNetTool --version 4.1.13
+
+      - name: Generate SBOM
+        run: sbom-tool generate -b artifacts/publish -bc . -pn Tasvir -pv 1.0.0 -ps Tasvir -nsb https://github.com/yoldashdesigndev/tasvir -m artifacts/publish/licenses
+
+      - name: Antivirus scan (Microsoft Defender)
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $candidates = @(
+            (Join-Path $env:ProgramFiles 'Windows Defender\MpCmdRun.exe'),
+            (Join-Path ${env:ProgramFiles(x86)} 'Windows Defender\MpCmdRun.exe')
+          )
+          $mp = $candidates | Where-Object { Test-Path $_ } | Select-Object -First 1
+          if (-not $mp) {
+            Write-Warning 'Microsoft Defender CLI is not available on this runner; antivirus scan skipped.'
+            exit 0
+          }
+          $files = Get-ChildItem -Path 'artifacts/publish' -Recurse -File
+          foreach ($file in $files) {
+            & $mp -Scan -ScanType 3 -File $file.FullName
+            if ($LASTEXITCODE -eq 2) { throw "Threat detected in $($file.FullName)" }
+            if ($LASTEXITCODE -ne 0) { throw "Antivirus scan error ($LASTEXITCODE) for $($file.FullName)" }
+          }
+          Write-Output "Defender scanned $($files.Count) release files."
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: tasvir-win-x64
+          path: artifacts
+          if-no-files-found: error
+
+  verify-linux:
+    name: Platform-independent tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Test
+        run: dotnet test src/Tasvir.Tests/Tasvir.Tests.csproj -c Release
+
+  release:
+    name: Publish portable release
+    needs: [build-windows, verify-linux]
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: tasvir-win-x64
+          path: artifacts
+
+      - name: Create portable archive
+        shell: pwsh
+        run: Compress-Archive -Path 'artifacts/publish/*' -DestinationPath 'Tasvir-win-x64-portable.zip' -Force
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: pwsh
+        run: gh release create "${{ github.ref_name }}" "Tasvir-win-x64-portable.zip#Tasvir win-x64 portable" --generate-notes

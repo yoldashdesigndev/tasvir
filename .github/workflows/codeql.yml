@@ -1,0 +1,40 @@
+name: codeql
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '27 4 * * 1'
+
+permissions:
+  contents: read
+
+jobs:
+  analyze:
+    name: CodeQL (C#)
+    runs-on: windows-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - uses: github/codeql-action/init@v4
+        with:
+          languages: c-sharp
+          build-mode: manual
+
+      - name: Build for analysis
+        run: dotnet build Tasvir.sln -c Release
+
+      - uses: github/codeql-action/analyze@v4
+        with:
+          category: '/language:csharp'

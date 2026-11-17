@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AppTitle" xml:space="preserve"><value>Tasvir</value></data>
+  <data name="Tagline" xml:space="preserve"><value>Telefonun. Masaüstün.</value></data>
+  <data name="NavMirror" xml:space="preserve"><value>Yansıtma</value></data>
+  <data name="NavSettings" xml:space="preserve"><value>Ayarlar</value></data>
+  <data name="NavAbout" xml:space="preserve"><value>Hakkında</value></data>
+  <data name="StatusDisconnected" xml:space="preserve"><value>Bağlantı yok</value></data>
+  <data name="StatusConnected" xml:space="preserve"><value>Bağlı</value></data>
+  <data name="StatusConnecting" xml:space="preserve"><value>Bağlanıyor</value></data>
+  <data name="LanguageSwitch" xml:space="preserve"><value>EN</value></data>
+  <data name="MirrorTitle" xml:space="preserve"><value>Cihaz</value></data>
+  <data name="NoDevice" xml:space="preserve"><value>Cihaz bulunamadı</value></data>
+  <data name="DevicePlaceholder" xml:space="preserve"><value>USB veya Wi-Fi ile bir Android cihaz bağlayın</value></data>
+  <data name="Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Wifi" xml:space="preserve"><value>Wi-Fi</value></data>
+  <data name="StartMirroring" xml:space="preserve"><value>Yansıtmaya Başla</value></data>
+  <data name="StopMirroring" xml:space="preserve"><value>Yansıtmayı Durdur</value></data>
+  <data name="QuickSettings" xml:space="preserve"><value>Hızlı Ayarlar</value></data>
+  <data name="Diagnostics" xml:space="preserve"><value>Tanılama</value></data>
+  <data name="PreviewPlaceholder" xml:space="preserve"><value>Telefon ekranınız burada görünecek</value></data>
+  <data name="ConnectionInfo" xml:space="preserve"><value>Bağlantı Bilgileri</value></data>
+  <data name="Resolution" xml:space="preserve"><value>Çözünürlük</value></data>
+  <data name="Bitrate" xml:space="preserve"><value>Bit Hızı</value></data>
+  <data name="FrameRate" xml:space="preserve"><value>Kare Hızı</value></data>
+  <data name="EngineStatus" xml:space="preserve"><value>Motor: Scrcpy (yerel)</value></data>
+  <data name="SettingsTitle" xml:space="preserve"><value>Ayarlar</value></data>
+  <data name="Language" xml:space="preserve"><value>Dil</value></data>
+  <data name="Quality" xml:space="preserve"><value>Görüntü Kalitesi</value></data>
+  <data name="Connection" xml:space="preserve"><value>Bağlantı</value></data>
+  <data name="AutoReconnect" xml:space="preserve"><value>Otomatik Yeniden Bağlanma</value></data>
+  <data name="AboutTitle" xml:space="preserve"><value>Hakkında</value></data>
+  <data name="AboutDescription" xml:space="preserve"><value>Tasvir, Windows için geliştirilmiş profesyonel bir Android ekran yansıtma uygulamasıdır.</value></data>
+  <data name="Version" xml:space="preserve"><value>Sürüm</value></data>
+  <data name="Licenses" xml:space="preserve"><value>Lisanslar</value></data>
+  <data name="LicensesText" xml:space="preserve"><value>Scrcpy Apache 2.0 lisanslıdır. ADB, Android SDK Lisans Sözleşmesi kapsamında dağıtılır. Üçüncü taraf bildirimleri sürümlerle birlikte gelir.</value></data>
+  <data name="Copyright" xml:space="preserve"><value>© 2026 Tasvir. Tüm hakları saklıdır.</value></data>
+  <data name="Save" xml:space="preserve"><value>Kaydet</value></data>
+  <data name="Cancel" xml:space="preserve"><value>İptal</value></data>
+  <data name="English" xml:space="preserve"><value>English</value></data>
+  <data name="Turkish" xml:space="preserve"><value>Türkçe</value></data>
+  <data name="StatusUnauthorized" xml:space="preserve"><value>Yetkilendirilmedi</value></data>
+  <data name="StatusOffline" xml:space="preserve"><value>Çevrimdışı</value></data>
+  <data name="StatusError" xml:space="preserve"><value>Hata</value></data>
+  <data name="Refresh" xml:space="preserve"><value>Yenile</value></data>
+  <data name="AdbVersion" xml:space="preserve"><value>ADB sürümü</value></data>
+  <data name="NotAvailable" xml:space="preserve"><value>Kullanılamıyor</value></data>
+  <data name="ConnectWireless" xml:space="preserve"><value>Wi-Fi ile Bağlan</value></data>
+  <data name="WirelessTitle" xml:space="preserve"><value>Kablosuz bağlantı</value></data>
+  <data name="HostLabel" xml:space="preserve"><value>Cihaz IP adresi</value></data>
+  <data name="PortLabel" xml:space="preserve"><value>Port</value></data>
+  <data name="Connect" xml:space="preserve"><value>Bağlan</value></data>
+  <data name="WirelessInstructions" xml:space="preserve"><value>Telefonunuzda Kablosuz Hata Ayıklama'yı etkinleştirin, ardından orada görünen IP adresi ve portu girin. Bağlantıyı cihazda onaylamanız gerekir.</value></data>
+  <data name="InvalidHost" xml:space="preserve"><value>Geçerli bir IP adresi veya ana bilgisayar adı girin.</value></data>
+  <data name="InvalidPort" xml:space="preserve"><value>Port 1 ile 65535 arasında olmalıdır.</value></data>
+  <data name="ConnectionFailed" xml:space="preserve"><value>Bağlantı başarısız.</value></data>
+  <data name="AdbNotFound" xml:space="preserve"><value>ADB çalıştırılabilir dosyası bulunamadı.</value></data>
+  <data name="DevicesFound" xml:space="preserve"><value>cihaz bulundu</value></data>
+  <data name="LastError" xml:space="preserve"><value>Son hata</value></data>
+  <data name="Disconnect" xml:space="preserve"><value>Bağlantıyı Kes</value></data>
+  <data name="UsbInstructions" xml:space="preserve"><value>USB hata ayıklamayı etkinleştirin ve telefondaki onayı kabul edin.</value></data>
+  <data name="DeviceSerial" xml:space="preserve"><value>Seri No</value></data>
+  <data name="MirrorStarting" xml:space="preserve"><value>Yansıtma başlatılıyor…</value></data>
+  <data name="MirrorRunning" xml:space="preserve"><value>Yansıtma etkin</value></data>
+  <data name="MirrorStopped" xml:space="preserve"><value>Yansıtma durduruldu</value></data>
+  <data name="MirrorFailed" xml:space="preserve"><value>Yansıtma başarısız</value></data>
+  <data name="Fullscreen" xml:space="preserve"><value>Tam ekran</value></data>
+  <data name="NoDeviceSelected" xml:space="preserve"><value>Önce bağlı bir cihaz seçin.</value></data>
+  <data name="ScrcpyNotFound" xml:space="preserve"><value>Scrcpy motoru bulunamadı.</value></data>
+  <data name="PairMode" xml:space="preserve"><value>Cihazı eşleştir</value></data>
+  <data name="PairCode" xml:space="preserve"><value>Eşleştirme kodu</value></data>
+  <data name="PairPort" xml:space="preserve"><value>Eşleştirme portu</value></data>
+  <data name="PairInstructions" xml:space="preserve"><value>Geliştirici seçeneklerinde Kablosuz hata ayıklamayı açın, "Eşleştirme koduyla cihazı eşleştir" seçeneğini seçin ve orada görünen 6 haneli kodu ile eşleştirme portunu girin.</value></data>
+  <data name="InvalidPairCode" xml:space="preserve"><value>Cihazda görünen 6 haneli eşleştirme kodunu girin.</value></data>
+  <data name="Pairing" xml:space="preserve"><value>Eşleştiriliyor…</value></data>
+  <data name="Paired" xml:space="preserve"><value>Başarıyla eşleştirildi. Şimdi Kablosuz hata ayıklamada görünen portu kullanarak bağlanın.</value></data>
+  <data name="Rotation" xml:space="preserve"><value>Döndürme</value></data>
+  <data name="Reconnecting" xml:space="preserve"><value>Yeniden bağlanıyor…</value></data>
+  <data name="DeviceDisconnected" xml:space="preserve"><value>Cihaz bağlantısı kesildi</value></data>
+  <data name="DeviceCount" xml:space="preserve"><value>Cihaz sayısı</value></data>
+  <data name="Monitoring" xml:space="preserve"><value>Cihaz izleme</value></data>
+  <data name="Active" xml:space="preserve"><value>Etkin</value></data>
+  <data name="Paused" xml:space="preserve"><value>Duraklatıldı</value></data>
+  <data name="SettingsError" xml:space="preserve"><value>Ayar hatası</value></data>
+</root>

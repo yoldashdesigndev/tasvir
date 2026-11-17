@@ -1,0 +1,23 @@
+# Build results
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+artifacts/
+TestResults/
+*.nupkg
+
+# IDE / user files
+.vs/
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Untracked agent-skills bundle, not part of Tasvir
+superpowers/
+
+# OS files
+.DS_Store
+Thumbs.db
