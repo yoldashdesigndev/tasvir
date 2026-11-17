@@ -29,7 +29,7 @@ jobs:
 
       - uses: github/codeql-action/init@v4
         with:
-          languages: c-sharp
+          languages: csharp
           build-mode: manual
 
       - name: Build for analysis
